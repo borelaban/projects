@@ -1,0 +1,164 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Nigeria", "label": "Nigeria", "shape": "dot", "title": "Nigeria"}, {"color": "#97c2fc", "id": "Supplier", "label": "Supplier", "shape": "dot", "title": "Supplier"}, {"color": "#97c2fc", "id": "Transporter", "label": "Transporter", "shape": "dot", "title": "Transporter"}, {"color": "#97c2fc", "id": "Procurement \u0026 Construction", "label": "Procurement \u0026 Construction", "shape": "dot", "title": "Procurement \u0026 Construction"}, {"color": "#97c2fc", "id": "Wholesaler", "label": "Wholesaler", "shape": "dot", "title": "Wholesaler"}, {"color": "#97c2fc", "id": "Developer", "label": "Developer", "shape": "dot", "title": "Developer"}, {"color": "#97c2fc", "id": "Engineering", "label": "Engineering", "shape": "dot", "title": "Engineering"}, {"color": "#97c2fc", "id": "Saref International", "label": "Saref International", "shape": "dot", "title": "Saref International"}, {"color": "#97c2fc", "id": "Maintenance", "label": "Maintenance", "shape": "dot", "title": "Maintenance"}, {"color": "#97c2fc", "id": "Project Management", "label": "Project Management", "shape": "dot", "title": "Project Management"}, {"color": "#97c2fc", "id": "Woimex Limited", "label": "Woimex Limited", "shape": "dot", "title": "Woimex Limited"}, {"color": "#97c2fc", "id": "Consumer", "label": "Consumer", "shape": "dot", "title": "Consumer"}, {"color": "#97c2fc", "id": "Obasanjo Holdings Nigeria Limited", "label": "Obasanjo Holdings Nigeria Limited", "shape": "dot", "title": "Obasanjo Holdings Nigeria Limited"}, {"color": "#97c2fc", "id": "Dantata Group of Companies", "label": "Dantata Group of Companies", "shape": "dot", "title": "Dantata Group of Companies"}, {"color": "#97c2fc", "id": "Retailer", "label": "Retailer", "shape": "dot", "title": "Retailer"}, {"color": "#97c2fc", "id": "Broker", "label": "Broker", "shape": "dot", "title": "Broker"}, {"color": "#97c2fc", "id": "Zenith Bank Plc", "label": "Zenith Bank Plc", "shape": "dot", "title": "Zenith Bank Plc"}, {"color": "#97c2fc", "id": "Yinka Folawiyo Group", "label": "Yinka Folawiyo Group", "shape": "dot", "title": "Yinka Folawiyo Group"}, {"color": "#97c2fc", "id": "Research \u0026 Consulting", "label": "Research \u0026 Consulting", "shape": "dot", "title": "Research \u0026 Consulting"}, {"color": "#97c2fc", "id": "Les Centaures Routiers", "label": "Les Centaures Routiers", "shape": "dot", "title": "Les Centaures Routiers"}, {"color": "#97c2fc", "id": "Financing", "label": "Financing", "shape": "dot", "title": "Financing"}, {"color": "#97c2fc", "id": "Exporter", "label": "Exporter", "shape": "dot", "title": "Exporter"}, {"color": "#97c2fc", "id": "Mojec International Limited", "label": "Mojec International Limited", "shape": "dot", "title": "Mojec International Limited"}, {"color": "#97c2fc", "id": "Blow Chem Industries Limited", "label": "Blow Chem Industries Limited", "shape": "dot", "title": "Blow Chem Industries Limited"}, {"color": "#97c2fc", "id": "Flour Mills of Nigeria Plc", "label": "Flour Mills of Nigeria Plc", "shape": "dot", "title": "Flour Mills of Nigeria Plc"}, {"color": "#97c2fc", "id": "Kasapreko Company Limited", "label": "Kasapreko Company Limited", "shape": "dot", "title": "Kasapreko Company Limited"}, {"color": "#97c2fc", "id": "Ghana", "label": "Ghana", "shape": "dot", "title": "Ghana"}, {"color": "#97c2fc", "id": "Knamsche-Vas Group", "label": "Knamsche-Vas Group", "shape": "dot", "title": "Knamsche-Vas Group"}, {"color": "#97c2fc", "id": "Importer", "label": "Importer", "shape": "dot", "title": "Importer"}, {"color": "#97c2fc", "id": "Celplas Industries Nigeria Limited", "label": "Celplas Industries Nigeria Limited", "shape": "dot", "title": "Celplas Industries Nigeria Limited"}, {"color": "#97c2fc", "id": "Processor", "label": "Processor", "shape": "dot", "title": "Processor"}, {"color": "#97c2fc", "id": "Manufacturer", "label": "Manufacturer", "shape": "dot", "title": "Manufacturer"}, {"color": "#97c2fc", "id": "African Foundries Limited", "label": "African Foundries Limited", "shape": "dot", "title": "African Foundries Limited"}, {"color": "#97c2fc", "id": "Interplast Limited", "label": "Interplast Limited", "shape": "dot", "title": "Interplast Limited"}, {"color": "#97c2fc", "id": "Nigerian Foundries Limited", "label": "Nigerian Foundries Limited", "shape": "dot", "title": "Nigerian Foundries Limited"}, {"color": "#97c2fc", "id": "Wild Fusion Limited", "label": "Wild Fusion Limited", "shape": "dot", "title": "Wild Fusion Limited"}, {"color": "#97c2fc", "id": "Ultima Limited", "label": "Ultima Limited", "shape": "dot", "title": "Ultima Limited"}, {"color": "#97c2fc", "id": "Caverton Helicopters Limited", "label": "Caverton Helicopters Limited", "shape": "dot", "title": "Caverton Helicopters Limited"}, {"color": "#97c2fc", "id": "Oilserv Limited", "label": "Oilserv Limited", "shape": "dot", "title": "Oilserv Limited"}, {"color": "#97c2fc", "id": "National Salt Company Allied Industries Plc", "label": "National Salt Company Allied Industries Plc", "shape": "dot", "title": "National Salt Company Allied Industries Plc"}, {"color": "#97c2fc", "id": "Distributor", "label": "Distributor", "shape": "dot", "title": "Distributor"}, {"color": "#97c2fc", "id": "Dangote Group", "label": "Dangote Group", "shape": "dot", "title": "Dangote Group"}, {"color": "#97c2fc", "id": "Inputs Provider", "label": "Inputs Provider", "shape": "dot", "title": "Inputs Provider"}, {"color": "#97c2fc", "id": "Grower", "label": "Grower", "shape": "dot", "title": "Grower"}, {"color": "#97c2fc", "id": "Service Providers", "label": "Service Providers", "shape": "dot", "title": "Service Providers"}, {"color": "#97c2fc", "id": "Transmission", "label": "Transmission", "shape": "dot", "title": "Transmission"}, {"color": "#97c2fc", "id": "Dangote Sugar Refinery Plc", "label": "Dangote Sugar Refinery Plc", "shape": "dot", "title": "Dangote Sugar Refinery Plc"}, {"color": "#97c2fc", "id": "Warehousing", "label": "Warehousing", "shape": "dot", "title": "Warehousing"}, {"color": "#97c2fc", "id": "Animal Care Services Konsult Nigeria Limited", "label": "Animal Care Services Konsult Nigeria Limited", "shape": "dot", "title": "Animal Care Services Konsult Nigeria Limited"}, {"color": "#97c2fc", "id": "Juwel Energy Limited", "label": "Juwel Energy Limited", "shape": "dot", "title": "Juwel Energy Limited"}]);
+                  edges = new vis.DataSet([{"from": "Supplier", "to": "Dangote Sugar Refinery Plc"}, {"from": "Supplier", "to": "National Salt Company Allied Industries Plc"}, {"from": "Supplier", "to": "Obasanjo Holdings Nigeria Limited"}, {"from": "Transporter", "to": "Caverton Helicopters Limited"}, {"from": "Transporter", "to": "Dangote Group"}, {"from": "Transporter", "to": "Les Centaures Routiers"}, {"from": "Transporter", "to": "Oilserv Limited"}, {"from": "Procurement \u0026 Construction", "to": "Dantata Group of Companies"}, {"from": "Procurement \u0026 Construction", "to": "Knamsche-Vas Group"}, {"from": "Procurement \u0026 Construction", "to": "Yinka Folawiyo Group"}, {"from": "Wholesaler", "to": "Blow Chem Industries Limited"}, {"from": "Wholesaler", "to": "Dangote Sugar Refinery Plc"}, {"from": "Developer", "to": "Dantata Group of Companies"}, {"from": "Developer", "to": "Mojec International Limited"}, {"from": "Developer", "to": "Obasanjo Holdings Nigeria Limited"}, {"from": "Developer", "to": "Saref International"}, {"from": "Engineering", "to": "Dantata Group of Companies"}, {"from": "Engineering", "to": "Knamsche-Vas Group"}, {"from": "Engineering", "to": "Yinka Folawiyo Group"}, {"from": "Maintenance", "to": "Caverton Helicopters Limited"}, {"from": "Project Management", "to": "Oilserv Limited"}, {"from": "Woimex Limited", "to": "Ghana"}, {"from": "Broker", "to": "Obasanjo Holdings Nigeria Limited"}, {"from": "Research \u0026 Consulting", "to": "Animal Care Services Konsult Nigeria Limited"}, {"from": "Research \u0026 Consulting", "to": "Knamsche-Vas Group"}, {"from": "Financing", "to": "Zenith Bank Plc"}, {"from": "Exporter", "to": "Dangote Sugar Refinery Plc"}, {"from": "Exporter", "to": "Dantata Group of Companies"}, {"from": "Exporter", "to": "Interplast Limited"}, {"from": "Exporter", "to": "Kasapreko Company Limited"}, {"from": "Exporter", "to": "Knamsche-Vas Group"}, {"from": "Exporter", "to": "Saref International"}, {"from": "Exporter", "to": "Yinka Folawiyo Group"}, {"from": "Mojec International Limited", "to": "Nigeria"}, {"from": "Flour Mills of Nigeria Plc", "to": "Nigeria"}, {"from": "Kasapreko Company Limited", "to": "Ghana"}, {"from": "Importer", "to": "Dangote Group"}, {"from": "Importer", "to": "Dantata Group of Companies"}, {"from": "Importer", "to": "Flour Mills of Nigeria Plc"}, {"from": "Importer", "to": "Knamsche-Vas Group"}, {"from": "Importer", "to": "Saref International"}, {"from": "Importer", "to": "Woimex Limited"}, {"from": "Importer", "to": "Yinka Folawiyo Group"}, {"from": "Processor", "to": "Animal Care Services Konsult Nigeria Limited"}, {"from": "Processor", "to": "Dangote Sugar Refinery Plc"}, {"from": "Processor", "to": "Flour Mills of Nigeria Plc"}, {"from": "Processor", "to": "National Salt Company Allied Industries Plc"}, {"from": "Processor", "to": "Obasanjo Holdings Nigeria Limited"}, {"from": "Processor", "to": "Saref International"}, {"from": "Manufacturer", "to": "African Foundries Limited"}, {"from": "Manufacturer", "to": "Animal Care Services Konsult Nigeria Limited"}, {"from": "Manufacturer", "to": "Blow Chem Industries Limited"}, {"from": "Manufacturer", "to": "Celplas Industries Nigeria Limited"}, {"from": "Manufacturer", "to": "Dangote Group"}, {"from": "Manufacturer", "to": "Dangote Sugar Refinery Plc"}, {"from": "Manufacturer", "to": "Dantata Group of Companies"}, {"from": "Manufacturer", "to": "Flour Mills of Nigeria Plc"}, {"from": "Manufacturer", "to": "Interplast Limited"}, {"from": "Manufacturer", "to": "Kasapreko Company Limited"}, {"from": "Manufacturer", "to": "National Salt Company Allied Industries Plc"}, {"from": "Manufacturer", "to": "Nigerian Foundries Limited"}, {"from": "Manufacturer", "to": "Saref International"}, {"from": "Manufacturer", "to": "Yinka Folawiyo Group"}, {"from": "African Foundries Limited", "to": "Nigeria"}, {"from": "Interplast Limited", "to": "Ghana"}, {"from": "Nigerian Foundries Limited", "to": "Nigeria"}, {"from": "Wild Fusion Limited", "to": "Ghana"}, {"from": "Ultima Limited", "to": "Nigeria"}, {"from": "Caverton Helicopters Limited", "to": "Nigeria"}, {"from": "Oilserv Limited", "to": "Nigeria"}, {"from": "National Salt Company Allied Industries Plc", "to": "Nigeria"}, {"from": "Distributor", "to": "African Foundries Limited"}, {"from": "Distributor", "to": "Animal Care Services Konsult Nigeria Limited"}, {"from": "Distributor", "to": "Blow Chem Industries Limited"}, {"from": "Distributor", "to": "Dangote Group"}, {"from": "Distributor", "to": "Flour Mills of Nigeria Plc"}, {"from": "Distributor", "to": "Juwel Energy Limited"}, {"from": "Distributor", "to": "Kasapreko Company Limited"}, {"from": "Distributor", "to": "Knamsche-Vas Group"}, {"from": "Distributor", "to": "Obasanjo Holdings Nigeria Limited"}, {"from": "Distributor", "to": "Oilserv Limited"}, {"from": "Distributor", "to": "Saref International"}, {"from": "Distributor", "to": "Ultima Limited"}, {"from": "Distributor", "to": "Woimex Limited"}, {"from": "Distributor", "to": "Yinka Folawiyo Group"}, {"from": "Dangote Group", "to": "Nigeria"}, {"from": "Inputs Provider", "to": "Interplast Limited"}, {"from": "Grower", "to": "Dantata Group of Companies"}, {"from": "Grower", "to": "Yinka Folawiyo Group"}, {"from": "Service Providers", "to": "Mojec International Limited"}, {"from": "Service Providers", "to": "Obasanjo Holdings Nigeria Limited"}, {"from": "Service Providers", "to": "Wild Fusion Limited"}, {"from": "Dangote Sugar Refinery Plc", "to": "Nigeria"}, {"from": "Animal Care Services Konsult Nigeria Limited", "to": "Nigeria"}, {"from": "Juwel Energy Limited", "to": "Ghana"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -50,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
